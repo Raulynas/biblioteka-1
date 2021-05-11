@@ -41,7 +41,9 @@
                     @else
                     <li><a href="{{ route('authors.index') }}">{{ Auth::user()->name }}</a></li>
                     <li><a href="{{ route('authors.index') }}">Authors</a></li>
+                    <li><a href="{{ route('books.index') }}">Books</a></li>
                     <li><a href="{{ route('authors.create') }}">Create Author</a></li>
+                    <li><a href="{{ route('books.create') }}">Add Book</a></li>
                     <li>
                         <div><a href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();"> {{ __('Logout') }} </a>
@@ -100,6 +102,14 @@
         $(document).ready(function() {
             $('.sidenav').sidenav();
             $('.parallax').parallax();
+            $('select').formSelect();
+            $('.datepicker').datepicker({
+                disableDays: true,
+                firstDay: 1,
+                maxDate: new Date(),
+                format: "yyyy-mm",
+                yearRange: [100, 2030],
+            });
         });
         // var elem = document.querySelector('.sidenav');
         // var instance = new M.Sidenav(elem);

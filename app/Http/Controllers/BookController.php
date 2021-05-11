@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Author;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -14,7 +15,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $books = Book::all();
+        $authors = Author::orderBy("name") -> get();
+        return view('books/index', ['books' => $books], ["authors" => $authors]);
     }
 
     /**
@@ -24,7 +27,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $authors = Author::orderBy("name")->get();
+
+        return view('books.create', ["authors" => $authors]);
     }
 
     /**
@@ -35,8 +40,18 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $book = new Book();
+        $book->title = ucfirst(strtolower($request->title));
+        $book->author_id = $request->author_id;
+        $book->publishDate = $request->publishDate;
+        $book->pages = $request->pages;
+        $book->coverType = "unknown";
+        $book->coverType = $request->cover;
+        $book->save();
+        return redirect()->route('books.index')->with("msg", "Book:  \"$book->title\" was added successfully");
+
     }
+
 
     /**
      * Display the specified resource.
@@ -78,8 +93,10 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $book->delete();
+        return redirect()->route('books.index')->with("msg", "\"$book->title\" was deleted successfully");
     }
 }

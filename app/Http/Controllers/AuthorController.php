@@ -14,7 +14,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
+        $authors = Author::get()->sortBy("name");
         return view('authors/index', ['authors' => $authors]);
     }
 
@@ -42,7 +42,7 @@ class AuthorController extends Controller
         $author->surname = ucfirst(strtolower($request->surname));
         $author->nationality = ucfirst(strtolower($request->nationality));
         $author->save();
-        return redirect()->route('authors.index')->with("msg", "Author: $author->name $author->surname was created successfully");
+        return redirect()->route('authors.index')->with("msg", "Author: \"$author->name $author->surname\" was created successfully");
 
     }
 
@@ -52,9 +52,10 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function show(Author $author)
+    public function show($id)
     {
-        //
+        return Author::findOrFail($id);
+
     }
 
     /**
@@ -90,6 +91,6 @@ class AuthorController extends Controller
     {
         $author = Author::findOrFail($id);
         $author -> delete();
-        return redirect()->route('authors.index')->with("msg", "$author->name $author->surname was deleted successfully");
+        return redirect()->route('authors.index')->with("msg", "\"$author->name $author->surname\" was deleted successfully");
     }
 }

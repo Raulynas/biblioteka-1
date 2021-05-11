@@ -15,10 +15,12 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('author_id');
             $table->string("title");
-            $table->integer("pages");
+            $table->unsignedBigInteger('author_id');
             $table->foreign('author_id')->references('id')->on('authors');
+            $table->string("publishDate");
+            $table->integer("pages");
+            $table->string("coverType")-> default("unknown");
             $table->timestamps();
         });
     }

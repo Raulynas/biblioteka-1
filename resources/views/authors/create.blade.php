@@ -7,15 +7,15 @@
             <form method="post" action="{{route('authors.store')}}">
                 @csrf
                 <div class="input-field">
-                    <input type="text" name="name" id="name">
+                    <input type="text" name="name" id="name" required>
                     <label for="name">Author name</label>
                 </div>
                 <div class="input-field">
-                    <input type="text" name="surname" id="surname">
+                    <input type="text" name="surname" id="surname" required>
                     <label for="surname">Author surname</label>
                 </div>
                 <div class="input-field">
-                    <input type="text" name="nationality" id="age">
+                    <input type="text" name="nationality" id="age" required>
                     <label for="nationality">Nationality</label>
                 </div>
                 <div class="input-field center">
