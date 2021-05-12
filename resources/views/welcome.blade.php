@@ -3,7 +3,7 @@
 
 <div class="container center" style="margin-top: 50px; margin-bottom: 50px;">
     <div>
-        <a class="btn grey" href="{{ route('login') }}">Login</a>
+        <a class="btn orange darken-1" href="{{ route('login') }}">Login</a>
     </div>
 </div>
 <div class="parallax-container">

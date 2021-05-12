@@ -103,6 +103,7 @@
             $('.sidenav').sidenav();
             $('.parallax').parallax();
             $('select').formSelect();
+            $('.tooltipped').tooltip()
             $('.datepicker').datepicker({
                 disableDays: true,
                 firstDay: 1,

@@ -34,7 +34,7 @@ class AuthorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
+
     public function store(Request $request)
     {
         $author = new Author();
@@ -43,7 +43,6 @@ class AuthorController extends Controller
         $author->nationality = ucfirst(strtolower($request->nationality));
         $author->save();
         return redirect()->route('authors.index')->with("msg", "Author: \"$author->name $author->surname\" was created successfully");
-
     }
 
     /**
@@ -52,10 +51,14 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        return Author::findOrFail($id);
+    // public function show($id)
+    // {
+    //     return Author::findOrFail($id);
 
+    // }
+    public function show(Author $author)
+    {
+        return view('authors/show', ['author' => $author]);
     }
 
     /**
@@ -66,7 +69,7 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        //
+        return view("authors/edit", ["author" => $author]);
     }
 
     /**
@@ -78,7 +81,12 @@ class AuthorController extends Controller
      */
     public function update(Request $request, Author $author)
     {
-        //
+        $author->name = ucfirst(strtolower($request->name));
+        $author->surname = ucfirst(strtolower($request->surname));
+        $author->nationality = ucfirst(strtolower($request->nationality));
+        $author->save();
+        return redirect()->route('authors.index')->with("msg", "Author: \"$author->name $author->surname\" was updated successfully");
+
     }
 
     /**
@@ -90,7 +98,7 @@ class AuthorController extends Controller
     public function destroy($id)
     {
         $author = Author::findOrFail($id);
-        $author -> delete();
+        $author->delete();
         return redirect()->route('authors.index')->with("msg", "\"$author->name $author->surname\" was deleted successfully");
     }
 }
