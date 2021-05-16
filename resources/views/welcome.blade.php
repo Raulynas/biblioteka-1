@@ -8,8 +8,9 @@
 </div>
 <div class="parallax-container">
     <div class="parallax">
-        <img src="https://img-cdn.inc.com/image/upload/w_1920,h_1080,c_fill/images/panoramic/GettyImages-900301626_437925_t2i3bm.jpg" alt="stars" class="responsive-img">
-    </div>
+    <img src="https://img-cdn.inc.com/image/upload/w_1920,h_1080,c_fill/images/panoramic/GettyImages-900301626_437925_t2i3bm.jpg" alt="stars" class="responsive-img">
+    </div >
+
 </div>
 
-@endsection
+    @endsection
