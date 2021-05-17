@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Author;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -16,7 +17,7 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::orderBy("title")->get();
-        $authors = Author::orderBy("name") -> get();
+        $authors = Author::orderBy("name")->get();
         return view('books/index', ['books' => $books], ["authors" => $authors]);
     }
 
@@ -40,6 +41,40 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => ['required', 'string', "min:8", 'max:100'],
+                'author_id' => ['required', 'numeric'],
+                "pages" => ["required", "numeric", 'max:20000'],
+                'cover' => ['required', 'string', 'max:255']
+            ],
+            [
+                "title.required" => "Enter book title",
+                "title.string" => "Book title must be text",
+                "title.min" => "Book title is too short",
+                "title.max" => "Book title is too long",
+
+                "author_id.required" => "Select author",
+                "author_id.numeric" => "Select author",
+
+                "pages.required" => "Enter page numbers",
+                "pages.numeric" => "Pages have to be in numbers",
+                "pages.max" => "Page number is too long",
+
+                "cover.required" => "Select book cover",
+                "cover.string" => "Cover have to be text",
+                "cover.max" => "Cover text is too long",
+            ]
+
+        );
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
+
+
         $book = new Book();
         $book->title = ucfirst($request->title);
         $book->author_id = $request->author_id;
@@ -48,7 +83,6 @@ class BookController extends Controller
         $book->coverType = $request->cover;
         $book->save();
         return redirect()->route('books.index')->with("msg", "Book:  \"$book->title\" was added successfully");
-
     }
 
 
@@ -61,7 +95,6 @@ class BookController extends Controller
     public function show(Author $author)
     {
         return view('books/show', ['author' => $author]);
-
     }
 
     /**
@@ -72,10 +105,9 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        $authors = Author::orderBy("name") -> get();
+        $authors = Author::orderBy("name")->get();
 
-        return view("books/edit", ["book" => $book] , ["authors" => $authors]);
-
+        return view("books/edit", ["book" => $book], ["authors" => $authors]);
     }
 
 
@@ -95,7 +127,6 @@ class BookController extends Controller
         $book->coverType = $request->cover;
         $book->save();
         return redirect()->route('books.index')->with("msg", "Book:  \"$book->title\" was updated successfully");
-
     }
 
     /**

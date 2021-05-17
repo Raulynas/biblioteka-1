@@ -44,33 +44,28 @@
                     </li>
                     @endif @else
 
-                    <li>
-                        <a href="{{ route('authors.index') }}">{{ Auth::user()->name }}</a>
-                    </li>
-                    <a class="dropdown-trigger btn" href="#" data-target="dropdown1">Authors</a>
+                    <li> <a class="dropdown-trigger" href="#" data-target="dropdown1">Authors</a> </li>
                     <ul id="dropdown1" class="dropdown-content">
-                        <li>
-                            <a href="{{ route('authors.index') }}">Authors</a>
+                        <li> <a href="{{ route('authors.index') }}">All authors</a></li>
+                        <li> <a href="{{ route('authors.create') }}">Create Author</a></li>
+                    </ul>
+
+                    <li> <a class="dropdown-trigger" href="#" data-target="dropdown2">Books</a> </li>
+                    <ul id="dropdown2" class="dropdown-content">
+                        <li><a href="{{ route('books.index') }}">All books</a></li>
+                        <li><a href="{{ route('books.create') }}">Add Book</a></li>
+                    </ul>
+
+                    <li> <a class="dropdown-trigger" href="#" data-target="dropdown3">{{ Auth::user()->name }}</a> </li>
+                    <ul id="dropdown3" class="dropdown-content">
+                        <li><a href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                {{ __("Logout") }}</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none"> @csrf
+                            </form>
                         </li>
                     </ul>
-                    <li><a href="{{ route('books.index') }}">Books</a></li>
-                    <li>
-                        <a href="{{ route('authors.create') }}">Create Author</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('books.create') }}">Add Book</a>
-                    </li>
-                    <li>
-                        <div>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                                {{ __("Logout") }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
-                    </li>
+
                 </ul>
                 <ul class="sidenav grey lighten-2" id="mobile-menu">
                     <li>
@@ -89,7 +84,31 @@
         </nav>
     </header>
     <main>
+
+        {{-- INFO MESSAGES --}}
+        <div class="container">
+            <div class="row">
+                <div class="col s12 l5 offset-l3">
+
+                    @if ($errors->any())
+
+                    @foreach ($errors->all() as $error)
+                    <div class="card blue-grey lighten-1">
+                        <div class="card-content white-text">
+                            <li>{{ $error }}</li>
+                        </div>
+                    </div>
+
+                    @endforeach
+
+                    @endif
+                </div>
+            </div>
+        </div>
+
+
         @yield("content")
+
     </main>
 
     <footer class="page-footer grey">
@@ -143,8 +162,15 @@
                     firstDay: 1,
                     maxDate: new Date(),
                     format: "yyyy-mm",
-                    yearRange: [100, 2030]
+                    yearRange: [100, 2030], 
                 });
+                $('.dropdown-trigger').dropdown({
+                    inDuration: 400,
+                    outDuration: 225,
+                    belowOrigin: true,
+                    coverTrigger: false,
+                    constrainWidth: false,
+                })
             });
     </script>
 </body>

@@ -19,4 +19,8 @@ main {
 my-table {
     background-color: red;
 }
+.nav-wraper a,
+.nav-wraper li:focus-visible {
+    outline: none;
+}
 

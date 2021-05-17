@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
 {
@@ -37,6 +38,26 @@ class AuthorController extends Controller
 
     public function store(Request $request)
     {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => ['required', 'string', "min:2", 'max:30'],
+                'surname' => ['required', 'string', "min:2", 'max:30'],
+                'nationality' => ['required', 'string', "min:2", 'max:30'],
+            ]
+
+
+        );
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
+
+
+
+
+
         $author = new Author();
         $author->name = ucfirst(strtolower($request->name));
         $author->surname = ucfirst(strtolower($request->surname));
@@ -86,7 +107,6 @@ class AuthorController extends Controller
         $author->nationality = ucfirst(strtolower($request->nationality));
         $author->save();
         return redirect()->route('authors.index')->with("msg", "Author: \"$author->name $author->surname\" was updated successfully");
-
     }
 
     /**
